@@ -51,20 +51,11 @@ with DAG('example_dag',
 
     # generate tasks with a loop. task_id must be unique
     for task in range(5):
-        if version.startswith('2'):
-            tn = PythonOperator(
-                task_id=f'python_print_date_{task}',
-                python_callable=my_custom_function,  # make sure you don't include the () of the function
-                op_kwargs={'task_number': task},
-            )
-        else:
-            tn = PythonOperator(
-                task_id=f'python_print_date_{task}',
-                python_callable=my_custom_function,  # make sure you don't include the () of the function
-                op_kwargs={'task_number': task},
-                provide_context=True,
-            )
-
+        tn = PythonOperator(
+            task_id=f'python_print_date_{task}',
+            python_callable=my_custom_function,  # make sure you don't include the () of the function
+            op_kwargs={'task_number': task},
+        )
 
         t0 >> tn # indented inside for loop so each task is added downstream of t0
 
